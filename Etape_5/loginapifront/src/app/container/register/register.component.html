@@ -1,0 +1,57 @@
+<div class="login">
+    <div class="login_container" id="container">
+        <div class="login_form-container login_sign-in-container">
+            <form action="#">
+                <h1>Register</h1>
+
+                <div class="social-container">
+                    <a href="#" class="social">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+
+                    <a href="#" class="social">
+                        <i class="fab fa-google-plus-g"></i>
+                    </a>
+
+                    <a href="#" class="social">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+
+                <span>or create your account</span>
+
+                <div *ngIf="error != ''" class="alert alert-danger" role="alert">
+                    <p class="login_error">{{error}}</p>
+                </div>
+
+                <input [(ngModel)]="username" type="text" placeholder="username" name="username" />
+
+                <input [(ngModel)]="password" type="password" placeholder="Password" name="password" />
+
+                <select [(ngModel)]="role" type="password" name="role">
+                    <option  value="-1" disabled>Choose</option>
+                    <option  value="ROLE_USER">User</option>
+                    <option  value="ROLE_ADMIN">Admin</option>
+                </select>
+
+                <button (click)="register()">Sign Up</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="login_overlay">
+                <div class="login_overlay-panel login_overlay-left">
+                    <h2>Welcome Back!</h2>
+
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+
+                <div class="login_overlay-panel overlay-right">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <a href="/login"><button class="ghost" id="signUp">Sign In</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

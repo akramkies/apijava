@@ -1,0 +1,306 @@
+<!-- <app-navbar></app-navbar>-->
+ <form>
+    <div *ngIf="error == ''" class="w-container">
+        <label>First Name</label>
+        <input class="w-input" [(ngModel)]="user.username" [ngModelOptions]="{standalone: true}" type="text" />
+        <button class="button-update-profile" (click)="updateUser()">Modifier</button>
+    </div>
+    <div *ngIf="error != ''">
+        <div class="w-container">
+            <label>First Name</label>
+            <input class="w-input-red" [(ngModel)]="user.username" [ngModelOptions]="{standalone: true}" type="text" />
+            <button class="button-update-profile" (click)="updateUser()">Modifier</button>
+        </div>
+        <div class="container text-danger">
+            <p class="pl-5"> {{error}} </p>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" id="catalogModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ajouter un catalog</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="road-address" class="col-form-label">Reference</label>
+                        <input type="text" [(ngModel)]="newCatalog.reference" [ngModelOptions]="{standalone: true}" class="form-control" id="road-address" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postal-address" class="col-form-label">Famille</label>
+                        <input type="text" [(ngModel)]="newCatalog.family" [ngModelOptions]="{standalone: true}" class="form-control" id="postal-address">
+                    </div>
+                    <div class="mb-3">
+                        <label for="city-address" class="col-form-label">Designation</label>
+                        <input type="text" [(ngModel)]="newCatalog.designation" [ngModelOptions]="{standalone: true}" class="form-control" id="city-address">
+                    </div>
+                    <div class="mb-3">
+                        <label for="postal-address" class="col-form-label">Prix de vente</label>
+                        <input type="number" [(ngModel)]="newCatalog.salePrice" [ngModelOptions]="{standalone: true}" class="form-control" id="postal-address">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="postal-address" class="col-form-label">Prix d'achat</label>
+                        <input type="number" [(ngModel)]="newCatalog.costPrice" [ngModelOptions]="{standalone: true}" class="form-control" id="postal-address">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="addCatalog()">Ajouter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="catalogs_container" *ngIf="user.role == 1">
+    <div class="statistics">
+        <div class="statistics_card">
+            <a class="dashboard-stat red" href="/profile#user-bloc">
+                <div class="visual">
+                    <i class="fa fa-usd"></i>
+                </div>
+
+                <div class="details">
+                    <div class="number">
+                    <span>{{nbUser}}</span>
+                    </div>
+
+                    <div class="desc">Utilisateur</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="statistics_card">
+            <a class="dashboard-stat blue" href="/profile#address-bloc">
+            <div class="visual">
+                <i class="fa fa-bar-chart-o"></i>
+            </div>
+
+            <div class="details">
+                <div class="number">
+                <span>{{nbAddress}}</span>
+                </div>
+
+                <div class="desc">Adresses</div>
+            </div>
+            </a>
+        </div>
+
+        <div class="statistics_card">
+            <a class="dashboard-stat hoki" href="#">
+            <div class="visual">
+                <i class="fa fa-credit-card"></i>
+            </div>
+
+            <div class="details">
+                <div class="number">
+                <span>+ 53%</span>
+                </div>
+
+                <div class="desc">Commandes</div>
+            </div>
+            </a>
+        </div>
+
+        <div class="statistics_card">
+            <a class="dashboard-stat purple" href="/profile#catalog-bloc">
+            <div class="visual">
+                <i class="fa fa-comments"></i>
+            </div>
+
+            <div class="details">
+                <div class="number">
+                <span>{{nbCatalog}}</span>
+                </div>
+
+                <div class="desc">Catalogues</div>
+            </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="address-bloc">
+    <div class="catalogs">
+        <table class="table">
+            <thead class="table-secondary">
+                <tr>
+                    <th class="text-center">Road</th>
+                    <th class="text-center">Postal Code</th>
+                    <th class="text-center">City</th>
+                    <th class="text-center">Country</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let addr of address; let i = index">
+                    <td class="text-center"> {{addr.street}} </td>
+                    <td class="text-center"> {{addr.postalCode}} </td>
+                    <td class="text-center"> {{addr.city}} </td>
+                    <td class="text-center"> {{addr.country}}</td>
+                    <td class="text-center">
+                        <button class="button-update-profile" style="background-color: green;" data-bs-toggle="modal" data-bs-target="#modalUpdateAddress">Modifier</button>
+                        <button class="button-update-profile" style="background-color: red;" (click)="deleteAddress(i)">Supprimer</button>
+
+                    </td>
+                    <div class="modal fade" id="modalUpdateAddress" tabindex="-1" aria-labelledby="modalUpdateAddress" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modifier une adresse</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="needs-validation" novalidate>
+                                        <div class="mb-3">
+                                            <label for="road-address" class="col-form-label">Rue</label>
+                                            <input type="text" [(ngModel)]="address[i].street" [ngModelOptions]="{standalone: true}" class="form-control" id="road-address" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="postal-address" class="col-form-label">Code postal</label>
+                                            <input type="text" [(ngModel)]="address[i].postalCode" [ngModelOptions]="{standalone: true}" class="form-control" id="postal-address">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="city-address" class="col-form-label">Ville</label>
+                                            <input type="text" [(ngModel)]="address[i].city" [ngModelOptions]="{standalone: true}" class="form-control" id="city-address">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="postal-address" class="col-form-label">Pays</label>
+                                            <input type="text" [(ngModel)]="address[i].country" [ngModelOptions]="{standalone: true}" class="form-control" id="postal-address">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="updateAddress(i)">Modifier</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="button" class="btn btn-dark mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ajouter</button>
+        </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ajouter une adresse</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="needs-validation" novalidate>
+                            <div class="mb-3">
+                                <label for="road-address" class="col-form-label">Rue</label>
+                                <input type="text" [(ngModel)]="newAddress.street" [ngModelOptions]="{standalone: true}" class="form-control" id="road-address" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="postal-address" class="col-form-label">Code postal</label>
+                                <input type="text" [(ngModel)]="newAddress.postalCode" [ngModelOptions]="{standalone: true}" class="form-control" id="postal-address">
+                            </div>
+                            <div class="mb-3">
+                                <label for="city-address" class="col-form-label">Ville</label>
+                                <input type="text" [(ngModel)]="newAddress.city" [ngModelOptions]="{standalone: true}" class="form-control" id="city-address">
+                            </div>
+                            <div class="mb-3">
+                                <label for="postal-address" class="col-form-label">Pays</label>
+                                <input type="text" [(ngModel)]="newAddress.country" [ngModelOptions]="{standalone: true}" class="form-control" id="postal-address">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="addAddress()">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="catalogs_container" id="user-bloc">
+    <div class="catalogs" *ngIf="user.role == 1">
+        <h2>Utilisateurs</h2>
+
+        <div class="row pb-5 mb-4">
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0" *ngFor="let _user of users; let i = index">
+                <!-- Card-->
+                <div class="card rounded shadow-sm border-0">
+                    <div class="card-body p-0">
+                        <div *ngIf="i % 3 == 0" class="bg-primary px-5 py-4 text-center card-img-top"><img src="https://bootstrapious.com/i/snippets/sn-cards/teacher-4.jpg" alt="..." width="100" class="rounded-circle mb-2 img-thumbnail d-block mx-auto">
+                            <h5 class="text-white mb-0">{{_user.username}}</h5>
+                            <p class="small text-white mb-0" *ngIf="_user.role == 1">Administrateur</p>
+                            <p class="small text-white mb-0" *ngIf="_user.role == 0">Utilisateur</p>
+                        </div>
+
+                        <div *ngIf="i % 3 == 1" class="bg-success px-5 py-4 text-center card-img-top"><img src="https://bootstrapious.com/i/snippets/sn-cards/teacher-4.jpg" alt="..." width="100" class="rounded-circle mb-2 img-thumbnail d-block mx-auto">
+                            <h5 class="text-white mb-0">{{_user.username}}</h5>
+                            <p class="small text-white mb-0" *ngIf="_user.role == 1">Administrateur</p>
+                            <p class="small text-white mb-0" *ngIf="_user.role == 0">Utilisateur</p>
+                        </div>
+
+                        <div *ngIf="i % 3 == 2" class="bg-warning px-5 py-4 text-center card-img-top"><img src="https://bootstrapious.com/i/snippets/sn-cards/teacher-4.jpg" alt="..." width="100" class="rounded-circle mb-2 img-thumbnail d-block mx-auto">
+                            <h5 class="text-white mb-0">{{_user.username}}</h5>
+                            <p class="small text-white mb-0" *ngIf="_user.role == 1">Administrateur</p>
+                            <p class="small text-white mb-0" *ngIf="_user.role == 0">Utilisateur</p>
+                        </div>
+
+                        <div class="p-4 d-flex justify-content-center">
+                            <ul class="list-inline m-0">
+                                <li class="list-inline-item">
+                                    <button class="btn btn-primary btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Add"><i class="fa fa-table"></i></button>
+                                </li>
+                                <li class="list-inline-item">
+                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                </li>
+                                <li class="list-inline-item">
+                                    <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete" (click)="deleteUser(_user.id || 0)"><i class="fa fa-trash"></i></button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="catalogs_container" *ngIf="user.role == 1" id="catalog-bloc">
+    <div class="catalogs" >
+        <div class="catalogs_header">
+            <h2>Nos catalogues</h2>
+
+            <button class="bttn" data-bs-toggle="modal" data-bs-target="#catalogModal" data-bs-whatever="@mdo">Ajouter</button>
+        </div>
+
+        <div class="catalogs_cards">
+            <!-- Card-->
+            <div class="catalogs_cards_card" *ngFor="let _catalog of catalogs; let i = index">
+                <div class="catalogs_cards_card_img">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7a_fjTed5oAWNKbNcgiJzVqnjwIHPl4rzlQ&usqp=CAU" alt="">
+                </div>
+
+                <span class="catalogs_cards_card_title">{{_catalog.reference}}</span>
+
+                <span>Famille: {{_catalog.family}}</span>
+
+                <span>Designation: {{_catalog.designation}}</span>
+
+                <span>Prix de vente: {{_catalog.salePrice}} <strong>€</strong></span>
+
+                <span>Prix d'achat: {{_catalog.costPrice}} <strong>€</strong></span>
+
+                <button class="bttn--orange" (click)="deleteCatalog(i)">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>

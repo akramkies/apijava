@@ -1,0 +1,19 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <div class="card" *ngFor="let _catalog of catalogs; let i = index">
+        <div class="imgBx">
+
+        </div>
+
+        <div class="contentBx">
+            <h2>{{_catalog.family}}</h2>
+
+            <div class="size">
+                <h3>Quantité :</h3>
+                <input style="width: 50px;" type="number" name="" id="">
+            </div>
+
+            <a style="width: 50%; align-self: center;" href="#">Buy Now</a>
+        </div>
+    </div>
+</div>

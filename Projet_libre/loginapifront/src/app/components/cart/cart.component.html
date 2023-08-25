@@ -1,0 +1,74 @@
+<section class="shoping-cart spad" >
+    <div class="container" >
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">Products</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr 
+                                *ngFor="let p of cartData.products; index as i"
+                            >
+                                <td class="shoping__cart__item">
+                                    <img [src]="p.product.imgUrl" alt="">
+                                    <h5>{{ p.product.designation }}</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    {{ p.product.salePrice  | currency: "EUR"}}
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <span class="dec qtybtn" (click)="
+                                            p.inCart > 0 &&
+                                            updateCart(p.product.reference, p.inCart - 1)">-</span>
+                                            <input type="text" value="{{ p.inCart }}">
+                                            <span class="dec qtybtn" (click)="updateCart(p.product.reference, p.inCart + 1)">+</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    {{ p.product.salePrice * p.inCart }}
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <span class="icon_close" (click)="removeCartItem(p.product.reference)"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="cartData.products.length !== 0">
+            <div class="col-lg-6">
+                <div class="shoping__continue">
+                    <div class="shoping__discount">
+                        <h5>Discount Codes</h5>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your coupon code">
+                            <button type="submit" class="site-btn">APPLY COUPON</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Cart Total</h5>
+                    <ul>
+                        <li>Coupon discount <span>{{ 0 | currency: 'EUR'}}</span></li>
+                        <li>Total <span>{{ getCartTotal() | currency: 'EUR'}}</span></li>
+                    </ul>
+                    <a href="#" class="primary-btn" routerLink="/checkout">PROCEED TO CHECKOUT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
